@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>日本地図（クリックで都道府県詳細／要確認優先・2色塗り・右上フェード）</title>
+  <title>地図UIデモ</title>
   <style>
     body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif; background:#f7fafc; margin:0; }
     .wrap { max-width:1080px; margin:32px auto; padding:16px; }
@@ -443,7 +443,10 @@
     });
 
     // 外側クリックで閉じる
-    document.addEventListener('click', () => closePanel());
+    document.addEventListener('click', (e) => {
+      if (panelEl && panelEl.contains(e.target)) return; // パネル内は無視
+      closePanel();                                      // 外側だけ閉じる
+    });
   })();
 
   /* ==== 右上固定＋フェード ==== */
