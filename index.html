@@ -31,7 +31,23 @@
     .btn{ border:1px solid #e5e7eb; background:#f9f9f9; border-radius:12px; padding:4px 8px; cursor:pointer; }
 
     .he-list{ list-style:none; padding:8px 0 0; margin:0; }
-    .he-item{ border:1px solid #e5e7eb; border-radius:10px; padding:6px 8px; margin-top:6px; }
+    .he-item{ margin-top:6px; }
+    .he-link{
+      display:block;
+      width:100%;
+      text-align:left;
+      appearance:none;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:10px;
+      padding:8px 10px;
+      cursor:pointer;
+      transition: background .15s ease, border-color .15s ease;
+    }
+    .he-link:hover{
+      background:#f9fafb;
+      border-color:#d1d5db;
+    }
     .he-name{ font-weight:600; }
     .he-meta{ font-size:12px; color:#444; }
     .he-status{ font-weight:700; }
@@ -448,13 +464,15 @@
       <ul class="he-list">
         ${heList.map(h=>`
           <li class="he-item">
-            <div class="he-name">${h.name}</div>
-            <div class="he-meta">
-              地域：${h.region}<br>
-              住所：${h.address}<br>
-              管理組織：${h.org}<br>
-              ステータス：<span class="he-status ${h.status==='要確認'?'warn':'ok'}">${h.status}</span>
-            </div>
+            <button type="button" class="he-link" aria-label="${h.name}の詳細">
+              <div class="he-name">${h.name}</div>
+              <div class="he-meta">
+                地域：${h.region}<br>
+                住所：${h.address}<br>
+                管理組織：${h.org}<br>
+                ステータス：<span class="he-status ${h.status==='要確認'?'warn':'ok'}">${h.status}</span>
+              </div>
+            </button>
           </li>`).join('')}
       </ul>
     `;
