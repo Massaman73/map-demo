@@ -467,21 +467,22 @@
       // どの地方でどの方向に出すか（tl/tr/bl/br/b = 左上/右上/左下/右下/真下）
       const REGION_ANCHOR = {
         hokkaido: 'tr',
-        tohoku:   'tr',
+        tohoku:   'r',
         kanto:    'br', // ←ご要望：関東は右下
-        chubu:    'tl', // ←ご要望：中部は左上
+        chubu:    'br', // ←ご要望：中部は左上
         kinki:    'br', // 右下に変更
         chugoku:  'tl',
         shikoku:  'b',  // 真下
-        kyushu:   'bl'
+        kyushu:   'l'
       };
 
       // ▓ 追加：地方ごとの距離オフセット
       const REGION_OFFSET = {
-        default: 2,   // ← 全体の基本距離（以前は 8）
-        hokkaido: 1,
-        kinki:   1,   // 地方別の微調整が必要なら任意で指定
-        shikoku: 3
+        default: 30,   // ← 全体の基本距離（以前は 8）
+        tohoku: 30,
+        kyushu : 30,
+        shikoku: 30,
+        chubu:  40,  // テスト用に大きく設定
       };
 
       // 地方の描画要素を取得するヘルパー
@@ -551,6 +552,10 @@
       function placeWidgetForRect(rect, anchor = 'tr'){
         const margin = 12;
         const off = (REGION_OFFSET[currentRegion] ?? REGION_OFFSET.default);
+        
+        // デバッグ用：chubu の問題を確認
+        console.log('placeWidgetForRect:', { currentRegion, off, availableOffsets: REGION_OFFSET });
+        
         const vw = window.innerWidth, vh = window.innerHeight;
         const w = widget.offsetWidth, h = widget.offsetHeight;
 
