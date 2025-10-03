@@ -179,6 +179,18 @@
     }
     .region-widget.show{ opacity:1; transform:none; pointer-events:auto; }
 
+    .region-widget .region-head{
+      margin-bottom: 16px; /* ヘッダーと一覧の間に隙間 */
+      text-align: center;
+    }
+    .region-widget .region-head .ja{
+      font-size: 18px;
+      font-weight: 800; /* 太字にする */
+      color: #333;
+      padding: 8px 0;
+      border-bottom: 2px solid #e5e7eb; /* 区切り線 */
+    }
+
     .region-widget .grid{
       display:grid; grid-template-columns:repeat(2, minmax(160px,1fr)); gap:12px;
     }
@@ -526,23 +538,29 @@
             const name = PREF_JA[key] || key || '不明';
             return {key, name, el:g};
           })
-          // 表示を安定させるため県名でソート
           .sort((a,b)=>a.name.localeCompare(b.name,'ja'));
 
-        widget.innerHTML = `<div class="grid">${
-          items.map(it => `<button class="item" data-pref="${it.key || ''}">
-              <span>${it.name}</span><span class="chev">▶</span>
-            </button>`).join('')
-        }</div>`;
+        const rja = REGION_JA[region] || '地方';
 
-        // クリックでカスタムイベントを発火
+        widget.innerHTML = `
+          <div class="region-head">
+            <div class="ja">${rja}</div>
+          </div>
+          <div class="grid">
+            ${items.map(it => `
+              <button class="item" data-pref="${it.key || ''}">
+                <span>${it.name}</span><span class="chev">▶</span>
+              </button>
+            `).join('')}
+          </div>
+        `;
+
         widget.querySelectorAll('.item').forEach(btn=>{
           btn.addEventListener('click', (e)=>{
             e.stopPropagation();
             const prefKey = btn.getAttribute('data-pref');
             const detail = { prefKey, prefName: PREF_JA[prefKey] || prefKey, region };
             document.dispatchEvent(new CustomEvent('prefectureclick', { detail }));
-            console.log('prefectureclick', detail);
           });
         });
       }
